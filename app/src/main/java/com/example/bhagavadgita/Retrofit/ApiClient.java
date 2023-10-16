@@ -13,7 +13,7 @@ public class ApiClient {
     public static ApiService getApiService() {
         if (retrofit == null) {
             OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-            // Add the AuthInterceptor to include "Authorization" header
+
             httpClient.addInterceptor(new AuthInterceptor());
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)

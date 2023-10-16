@@ -19,10 +19,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/*
- * 1.add font
- * 2.color
- * */
+
 public class MainActivity extends AppCompatActivity {
 
 

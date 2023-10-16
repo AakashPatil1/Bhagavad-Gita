@@ -12,7 +12,6 @@ public class AuthInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         Request originalRequest = chain.request();
 
-        // Add the "Authorization" header using the token from HomeFragment
         Request authenticatedRequest = originalRequest.newBuilder()
                 .addHeader("X-RapidAPI-Key","Enter your api key")
                 .addHeader("X-RapidAPI-Host","bhagavad-gita3.p.rapidapi.com")
