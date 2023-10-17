@@ -20,7 +20,6 @@ public class AllVersesAdapter extends RecyclerView.Adapter<AllVersesAdapter.View
 
 
     List<Verses> list;
-
     Context vContext;
 
     public AllVersesAdapter(List<Verses> list, Context vContext) {
@@ -31,7 +30,7 @@ public class AllVersesAdapter extends RecyclerView.Adapter<AllVersesAdapter.View
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_verses,parent,false);
+        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_verses, parent, false);
         return new ViewHolder(view);
     }
 
@@ -44,8 +43,8 @@ public class AllVersesAdapter extends RecyclerView.Adapter<AllVersesAdapter.View
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(vContext, SingleVersesActivity.class);
-                intent.putExtra("chapterNumber",list.get(position).getChapter_number());
-                intent.putExtra("versesNumber",list.get(position).getVerse_number());
+                intent.putExtra("chapterNumber", list.get(position).getChapter_number());
+                intent.putExtra("versesNumber", list.get(position).getVerse_number());
                 vContext.startActivity(intent);
             }
         });
@@ -60,6 +59,7 @@ public class AllVersesAdapter extends RecyclerView.Adapter<AllVersesAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvText;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 

@@ -13,8 +13,8 @@ public class AuthInterceptor implements Interceptor {
         Request originalRequest = chain.request();
 
         Request authenticatedRequest = originalRequest.newBuilder()
-                .addHeader("X-RapidAPI-Key","Enter your api key")
-                .addHeader("X-RapidAPI-Host","bhagavad-gita3.p.rapidapi.com")
+                .addHeader("X-RapidAPI-Key", "Enter your api key")
+                .addHeader("X-RapidAPI-Host", "bhagavad-gita3.p.rapidapi.com")
                 .build();
 
         return chain.proceed(authenticatedRequest);

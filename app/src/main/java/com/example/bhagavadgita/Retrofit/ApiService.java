@@ -17,10 +17,9 @@ public interface ApiService {
     @GET("chapters/{chapterNumber}/")
     Call<Chapters> getParticularChapter(@Path("chapterNumber") int chapterNumber);
 
-
     @GET("chapters/{chapterNumber}/verses/")
     Call<List<Verses>> getAllVersesFromParticularChapter(@Path("chapterNumber") int chapterNumber);
 
     @GET("chapters/{chapterNumber}/verses/{versesNumber}/")
-    Call<Verses> getParticularVerse(@Path("chapterNumber") int chapterNumber,@Path("versesNumber") int versesNumber);
+    Call<Verses> getParticularVerse(@Path("chapterNumber") int chapterNumber, @Path("versesNumber") int versesNumber);
 }

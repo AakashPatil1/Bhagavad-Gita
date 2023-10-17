@@ -9,13 +9,13 @@
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center" />
 
     <TextView
         android:id="@+id/loadingText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Loading..."
-        android:paddingTop="8dp" />
+        android:paddingTop="8dp"
+        android:text="Loading..." />
 
 </LinearLayout>

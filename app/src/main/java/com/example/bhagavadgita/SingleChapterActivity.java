@@ -51,15 +51,13 @@ public class SingleChapterActivity extends AppCompatActivity {
         rvVerses = findViewById(R.id.rvVerses);
 
 
-
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         final int chapterNumber = intent.getIntExtra("chapterNumber", 0);
 
         if (SharedPreferencesManager.getChapterByNumber(this, chapterNumber) == null) {
-
             getParticularChapter(chapterNumber);
-        }else{
-            Chapters chapters = SharedPreferencesManager.getChapterByNumber(this,chapterNumber);
+        } else {
+            Chapters chapters = SharedPreferencesManager.getChapterByNumber(this, chapterNumber);
             tvNameSingle.setText(chapters.getName());
             tvNameTranslatedSingle.setText(chapters.getNameTranslated());
             tvNameMeaning.setText(chapters.getNameMeaning());
@@ -67,19 +65,18 @@ public class SingleChapterActivity extends AppCompatActivity {
             tvSummary.setText(chapters.getChapterSummary());
             tvVersesCount.setText(String.valueOf(chapters.getVersesCount()));
         }
-        if (SharedPreferencesManager.getVerses(SingleChapterActivity.this).size() == 0){
+        if (SharedPreferencesManager.getVerses(SingleChapterActivity.this).size() == 0) {
             Log.i("SharedPreferences11", "onCreate:getVerses==0: ");
             getAllVersesFromParticularChapter();
-        }else {
+        } else {
             Log.i("SharedPreferences11", "onCreate:getVerses!=0: ");
             allVersesAdapter = new AllVersesAdapter(SharedPreferencesManager.getVerses(SingleChapterActivity.this), SingleChapterActivity.this);
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(SingleChapterActivity.this, RecyclerView.VERTICAL, false);
+            final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(SingleChapterActivity.this, RecyclerView.VERTICAL, false);
             rvVerses.setLayoutManager(linearLayoutManager);
             rvVerses.setAdapter(allVersesAdapter);
         }
 
     }
-
 
     private void getParticularChapter(final int chapterNumber) {
         LoadingDialog loadingDialog = new LoadingDialog(this);
@@ -101,7 +98,6 @@ public class SingleChapterActivity extends AppCompatActivity {
                 tvSummaryHindi.setText(response.body().getChapterSummaryHindi());
                 tvSummary.setText(response.body().getChapterSummary());
                 tvVersesCount.setText(String.valueOf(response.body().getVersesCount()));
-
 
 
             }
@@ -128,10 +124,10 @@ public class SingleChapterActivity extends AppCompatActivity {
                 Log.i("apiCallResponse", "onResponse:versesParticularChapter:isSuccessful: " + response.isSuccessful());
                 Log.i("apiCallResponse", "onResponse:versesParticularChapter:body: " + new Gson().toJson(response.body()));
 
-                SharedPreferencesManager.saveListVerses(SingleChapterActivity.this,response.body());
-                Log.i("SharedPreferences11", "onCreate:getVerses:: "+SharedPreferencesManager.getVerses(SingleChapterActivity.this));
+                SharedPreferencesManager.saveListVerses(SingleChapterActivity.this, response.body());
+                Log.i("SharedPreferences11", "onCreate:getVerses:: " + SharedPreferencesManager.getVerses(SingleChapterActivity.this));
                 allVersesAdapter = new AllVersesAdapter(response.body(), SingleChapterActivity.this);
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(SingleChapterActivity.this, RecyclerView.VERTICAL, false);
+                final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(SingleChapterActivity.this, RecyclerView.VERTICAL, false);
                 rvVerses.setLayoutManager(linearLayoutManager);
                 rvVerses.setAdapter(allVersesAdapter);
 

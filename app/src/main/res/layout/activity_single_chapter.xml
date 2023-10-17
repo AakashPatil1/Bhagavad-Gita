@@ -10,6 +10,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -20,38 +21,40 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_6sdp"
-                android:textSize="@dimen/_18sdp"
-                android:textColor="@color/main_text"/>
+                android:textColor="@color/main_text"
+                android:textSize="@dimen/_18sdp" />
+
             <TextView
                 android:id="@+id/tvNameTranslatedSingle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_6sdp"
-                android:textSize="@dimen/_14sdp"
-                android:textColor="@color/main_text"/>
+                android:textColor="@color/main_text"
+                android:textSize="@dimen/_14sdp" />
+
             <TextView
                 android:id="@+id/tvNameMeaning"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_6sdp"
-                android:textSize="@dimen/_14sdp"
-                android:textColor="@color/main_text"/>
+                android:textColor="@color/main_text"
+                android:textSize="@dimen/_14sdp" />
 
             <TextView
                 android:id="@+id/tvSummaryHindi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_6sdp"
-                android:textSize="@dimen/_12sdp"
-                android:textColor="@color/main_text"/>
+                android:textColor="@color/main_text"
+                android:textSize="@dimen/_12sdp" />
 
             <TextView
                 android:id="@+id/tvSummary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_6sdp"
-                android:textSize="@dimen/_12sdp"
-                android:textColor="@color/main_text"/>
+                android:textColor="@color/main_text"
+                android:textSize="@dimen/_12sdp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -62,14 +65,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/_12sdp"
-                    android:text="Verses:-"/>
+                    android:text="Verses:-"
+                    android:textSize="@dimen/_12sdp" />
 
                 <TextView
                     android:id="@+id/tvVersesCount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/_12sdp"/>
+                    android:textSize="@dimen/_12sdp" />
 
             </LinearLayout>
 
@@ -77,14 +80,11 @@
                 android:id="@+id/rvVerses"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_400sdp"
-                android:layout_margin="@dimen/_6sdp"/>
+                android:layout_margin="@dimen/_6sdp" />
 
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
-
-
 
 
 </RelativeLayout>

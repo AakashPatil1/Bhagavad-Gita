@@ -21,7 +21,6 @@ public class TranslationAdapter extends RecyclerView.Adapter<TranslationAdapter.
     Context context;
 
 
-
     public TranslationAdapter(ArrayList<Translation> translations, Context context) {
         this.translations = translations;
         this.context = context;
@@ -29,26 +28,25 @@ public class TranslationAdapter extends RecyclerView.Adapter<TranslationAdapter.
     }
 
 
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_single_verses, parent, false);
+        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_single_verses, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-            holder.tvDesc.setText(translations.get(position).getDescription());
-            holder.tvLanguage.setText(translations.get(position).getLanguage().toUpperCase());
-            holder.tvAuthor.setText(translations.get(position).getAuthor_name());
+        holder.tvDesc.setText(translations.get(position).getDescription());
+        holder.tvLanguage.setText(translations.get(position).getLanguage().toUpperCase());
+        holder.tvAuthor.setText(translations.get(position).getAuthor_name());
 
     }
 
     @Override
     public int getItemCount() {
-            return translations.size();
+        return translations.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -56,6 +54,7 @@ public class TranslationAdapter extends RecyclerView.Adapter<TranslationAdapter.
         TextView tvDesc;
         TextView tvAuthor;
         TextView tvLanguage;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 

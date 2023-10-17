@@ -23,13 +23,10 @@ import retrofit2.Response;
 public class SingleVersesActivity extends AppCompatActivity {
 
     TextView tvText;
-
     RecyclerView rvTranslations;
     RecyclerView rvCommentaries;
-
     TranslationAdapter translationAdapter;
     CommentaryAdapter commentaryAdapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,25 +36,25 @@ public class SingleVersesActivity extends AppCompatActivity {
         tvText = findViewById(R.id.tvText);
         rvTranslations = findViewById(R.id.rvTranslations);
         rvCommentaries = findViewById(R.id.rvCommentaries);
-        Intent intent = getIntent();
-        int cNumber = intent.getIntExtra("chapterNumber",0);
-        int vNumber = intent.getIntExtra("versesNumber",0);
+        final Intent intent = getIntent();
+        final int cNumber = intent.getIntExtra("chapterNumber",0);
+        final int vNumber = intent.getIntExtra("versesNumber",0);
 
 
-        if (SharedPreferencesManager.getVerseByChapterAndVerseNumber(SingleVersesActivity.this,cNumber,vNumber) == null){
+        if (SharedPreferencesManager.getVerseByChapterAndVerseNumber(SingleVersesActivity.this,cNumber,vNumber) == null) {
             getParticularVerse(cNumber,vNumber);
-        }else{
+        } else {
 
-            Verses verses = SharedPreferencesManager.getVerseByChapterAndVerseNumber(SingleVersesActivity.this,cNumber,vNumber);
+            final Verses verses = SharedPreferencesManager.getVerseByChapterAndVerseNumber(SingleVersesActivity.this,cNumber,vNumber);
 
             tvText.setText(verses.getText());
             translationAdapter = new TranslationAdapter(verses.getTranslations(),SingleVersesActivity.this);
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(SingleVersesActivity.this,LinearLayoutManager.VERTICAL,false);
+            final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(SingleVersesActivity.this,LinearLayoutManager.VERTICAL,false);
             rvTranslations.setLayoutManager(linearLayoutManager);
             rvTranslations.setAdapter(translationAdapter);
 
             commentaryAdapter = new CommentaryAdapter(verses.getCommentaries(),SingleVersesActivity.this);
-            LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(SingleVersesActivity.this,LinearLayoutManager.VERTICAL,false);
+            final LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(SingleVersesActivity.this,LinearLayoutManager.VERTICAL,false);
             rvCommentaries.setLayoutManager(linearLayoutManager1);
             rvCommentaries.setAdapter(commentaryAdapter);
         }
@@ -80,12 +77,12 @@ public class SingleVersesActivity extends AppCompatActivity {
 
                 tvText.setText(response.body().getText());
                 translationAdapter = new TranslationAdapter(response.body().getTranslations(),SingleVersesActivity.this);
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(SingleVersesActivity.this,LinearLayoutManager.VERTICAL,false);
+                final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(SingleVersesActivity.this,LinearLayoutManager.VERTICAL,false);
                 rvTranslations.setLayoutManager(linearLayoutManager);
                 rvTranslations.setAdapter(translationAdapter);
 
                 commentaryAdapter = new CommentaryAdapter(response.body().getCommentaries(),SingleVersesActivity.this);
-                LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(SingleVersesActivity.this,LinearLayoutManager.VERTICAL,false);
+                final LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(SingleVersesActivity.this,LinearLayoutManager.VERTICAL,false);
                 rvCommentaries.setLayoutManager(linearLayoutManager1);
                 rvCommentaries.setAdapter(commentaryAdapter);
 

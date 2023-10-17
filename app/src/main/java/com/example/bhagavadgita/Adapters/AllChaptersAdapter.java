@@ -29,7 +29,7 @@ public class AllChaptersAdapter extends RecyclerView.Adapter<AllChaptersAdapter.
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_chapters,parent,false);
+        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_chapters, parent, false);
         return new ViewHolder(view);
     }
 
@@ -43,7 +43,7 @@ public class AllChaptersAdapter extends RecyclerView.Adapter<AllChaptersAdapter.
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(cContext, SingleChapterActivity.class);
-                intent.putExtra("chapterNumber",list.get(position).getChapterNumber());
+                intent.putExtra("chapterNumber", list.get(position).getChapterNumber());
                 cContext.startActivity(intent);
             }
         });
@@ -58,6 +58,7 @@ public class AllChaptersAdapter extends RecyclerView.Adapter<AllChaptersAdapter.
 
         TextView tvName;
         TextView tvNameTranslated;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 

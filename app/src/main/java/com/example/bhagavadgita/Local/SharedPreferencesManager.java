@@ -18,7 +18,7 @@ public class SharedPreferencesManager {
     private static final String KEY_VERSES = "verses";
 
 
-    public static void saveListChapter(Context context, List<Chapters> value){
+    public static void saveListChapter(Context context, List<Chapters> value) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         String chaptersJson = GsonHelper.toJson(value);
@@ -26,7 +26,7 @@ public class SharedPreferencesManager {
         editor.apply();
     }
 
-    public static void saveListVerses(Context context, List<Verses> value){
+    public static void saveListVerses(Context context, List<Verses> value) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         String versesJson = GsonHelper.toJson(value);
@@ -39,13 +39,13 @@ public class SharedPreferencesManager {
         String chaptersJson = sharedPreferences.getString(KEY_CHAPTERS, null);
 
         if (chaptersJson != null) {
-            Type listType = new TypeToken<ArrayList<Chapters>>() {}.getType();
+            Type listType = new TypeToken<ArrayList<Chapters>>() {
+            }.getType();
             return GsonHelper.fromJsonList(chaptersJson, listType);
         }
 
         return new ArrayList<>();
     }
-
 
     public static Chapters getChapterByNumber(Context context, int chapterNumber) {
         List<Chapters> chapters = getChapters(context);
@@ -57,19 +57,19 @@ public class SharedPreferencesManager {
         return null;
     }
 
-
-
     public static List<Verses> getVerses(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         String versesJson = sharedPreferences.getString(KEY_VERSES, null);
 
         if (versesJson != null) {
-            Type listType = new TypeToken<ArrayList<Verses>>() {}.getType();
+            Type listType = new TypeToken<ArrayList<Verses>>() {
+            }.getType();
             return GsonHelper.fromJsonList(versesJson, listType);
         }
 
         return new ArrayList<>();
     }
+
     public static Verses getVerseByChapterAndVerseNumber(Context context, int chapterNumber, int verseNumber) {
         List<Verses> verses = getVerses(context);
         for (Verses verse : verses) {

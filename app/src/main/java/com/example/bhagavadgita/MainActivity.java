@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
     private void getAllChapters() {
         LoadingDialog loadingDialog = new LoadingDialog(this);
         loadingDialog.show();
@@ -65,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     SharedPreferencesManager.saveListChapter(MainActivity.this, response.body());
                     allChaptersAdapter = new AllChaptersAdapter(response.body(), MainActivity.this);
-                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this, RecyclerView.VERTICAL, false);
+                    final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this, RecyclerView.VERTICAL, false);
                     rvChapters.setLayoutManager(linearLayoutManager);
                     rvChapters.setAdapter(allChaptersAdapter);
 

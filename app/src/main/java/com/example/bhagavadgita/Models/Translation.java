@@ -3,7 +3,8 @@ package com.example.bhagavadgita.Models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Translation{
+public class Translation {
+
     @SerializedName("id")
     @Expose
     public int id;
