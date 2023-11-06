@@ -1,6 +1,7 @@
 package com.example.bhagavadgita;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,7 +13,9 @@ import com.example.bhagavadgita.Local.SharedPreferencesManager;
 import com.example.bhagavadgita.Models.Chapters;
 import com.example.bhagavadgita.Retrofit.ApiClient;
 import com.example.bhagavadgita.Retrofit.ApiService;
+import com.example.bhagavadgita.ViewModel.MainViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -23,8 +26,9 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
 
-    RecyclerView rvChapters;
-    AllChaptersAdapter allChaptersAdapter;
+    private RecyclerView rvChapters;
+    private AllChaptersAdapter allChaptersAdapter;
+    private MainViewModel mainViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,12 +37,34 @@ public class MainActivity extends AppCompatActivity {
 
         rvChapters = findViewById(R.id.rvChapters);
 
-        if (SharedPreferencesManager.getChapters(this).size() == 0) {
+        /*if (SharedPreferencesManager.getChapters(this).size() == 0) {
             Log.i("SharedPreferences", "onCreate:getChapters==0: ");
             getAllChapters();
         } else {
             Log.i("SharedPreferences", "onCreate:getChapters!=0: ");
             allChaptersAdapter = new AllChaptersAdapter(SharedPreferencesManager.getChapters(this), MainActivity.this);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this, RecyclerView.VERTICAL, false);
+            rvChapters.setLayoutManager(linearLayoutManager);
+            rvChapters.setAdapter(allChaptersAdapter);
+        }*/
+
+// Initialize your ViewModel
+        mainViewModel = new ViewModelProvider(this).get(MainViewModel.class); // Use ViewModelProvider
+
+        rvChapters = findViewById(R.id.rvChapters);
+
+        if(SharedPreferencesManager.getChapters(this).size()==0){
+
+        }else{
+            mainViewModel.setChapters(SharedPreferencesManager.getChapters(this));
+        }
+
+        if (mainViewModel.getChaptersLiveData().getValue() == null) {
+            Log.i("ViewModel", "onCreate: chaptersLiveData is empty");
+            getAllChapters();
+        } else {
+            Log.i("ViewModel", "onCreate: chaptersLiveData is not empty");
+            allChaptersAdapter = new AllChaptersAdapter(mainViewModel.getChaptersLiveData().getValue(), MainActivity.this);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this, RecyclerView.VERTICAL, false);
             rvChapters.setLayoutManager(linearLayoutManager);
             rvChapters.setAdapter(allChaptersAdapter);
