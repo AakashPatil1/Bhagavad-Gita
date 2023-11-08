@@ -1,6 +1,7 @@
 package com.example.bhagavadgita;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,6 +16,7 @@ import com.example.bhagavadgita.Local.SharedPreferencesManager;
 import com.example.bhagavadgita.Models.Verses;
 import com.example.bhagavadgita.Retrofit.ApiClient;
 import com.example.bhagavadgita.Retrofit.ApiService;
+import com.example.bhagavadgita.ViewModel.SingleVersesViewModel;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,6 +30,8 @@ public class SingleVersesActivity extends AppCompatActivity {
     TranslationAdapter translationAdapter;
     CommentaryAdapter commentaryAdapter;
 
+    SingleVersesViewModel singleVersesViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,12 +44,19 @@ public class SingleVersesActivity extends AppCompatActivity {
         final int cNumber = intent.getIntExtra("chapterNumber",0);
         final int vNumber = intent.getIntExtra("versesNumber",0);
 
+        singleVersesViewModel = new ViewModelProvider(this).get(SingleVersesViewModel.class);
 
-        if (SharedPreferencesManager.getVerseByChapterAndVerseNumber(SingleVersesActivity.this,cNumber,vNumber) == null) {
+        if (SharedPreferencesManager.getVerseByChapterAndVerseNumber(SingleVersesActivity.this,cNumber,vNumber) != null){
+            singleVersesViewModel.setVerses(SharedPreferencesManager.getVerseByChapterAndVerseNumber(this,cNumber,vNumber));
+        }
+
+
+        if (singleVersesViewModel.getVerses().getValue() == null) {
             getParticularVerse(cNumber,vNumber);
-        } else {
+        }
+        else {
 
-            final Verses verses = SharedPreferencesManager.getVerseByChapterAndVerseNumber(SingleVersesActivity.this,cNumber,vNumber);
+            final Verses verses = singleVersesViewModel.getVerses().getValue();
 
             tvText.setText(verses.getText());
             translationAdapter = new TranslationAdapter(verses.getTranslations(),SingleVersesActivity.this);
@@ -75,13 +86,15 @@ public class SingleVersesActivity extends AppCompatActivity {
                 Log.i("apiCallResponse", "onResponse:versesParticular:isSuccessful: "+response.isSuccessful());
                 Log.i("apiCallResponse", "onResponse:versesParticular:body: "+response.body());
 
-                tvText.setText(response.body().getText());
-                translationAdapter = new TranslationAdapter(response.body().getTranslations(),SingleVersesActivity.this);
+                singleVersesViewModel.setVerses(response.body());
+
+                tvText.setText(singleVersesViewModel.getVerses().getValue().getText());
+                translationAdapter = new TranslationAdapter(singleVersesViewModel.getVerses().getValue().getTranslations(),SingleVersesActivity.this);
                 final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(SingleVersesActivity.this,LinearLayoutManager.VERTICAL,false);
                 rvTranslations.setLayoutManager(linearLayoutManager);
                 rvTranslations.setAdapter(translationAdapter);
 
-                commentaryAdapter = new CommentaryAdapter(response.body().getCommentaries(),SingleVersesActivity.this);
+                commentaryAdapter = new CommentaryAdapter(singleVersesViewModel.getVerses().getValue().getCommentaries(),SingleVersesActivity.this);
                 final LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(SingleVersesActivity.this,LinearLayoutManager.VERTICAL,false);
                 rvCommentaries.setLayoutManager(linearLayoutManager1);
                 rvCommentaries.setAdapter(commentaryAdapter);

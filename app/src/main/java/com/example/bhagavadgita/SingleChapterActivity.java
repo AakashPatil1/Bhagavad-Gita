@@ -1,6 +1,7 @@
 package com.example.bhagavadgita;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,6 +16,7 @@ import com.example.bhagavadgita.Models.Chapters;
 import com.example.bhagavadgita.Models.Verses;
 import com.example.bhagavadgita.Retrofit.ApiClient;
 import com.example.bhagavadgita.Retrofit.ApiService;
+import com.example.bhagavadgita.ViewModel.SingleChapterViewModel;
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -37,6 +39,8 @@ public class SingleChapterActivity extends AppCompatActivity {
 
     AllVersesAdapter allVersesAdapter;
 
+    private SingleChapterViewModel singleChapterViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,11 +54,19 @@ public class SingleChapterActivity extends AppCompatActivity {
         tvVersesCount = findViewById(R.id.tvVersesCount);
         rvVerses = findViewById(R.id.rvVerses);
 
+        singleChapterViewModel = new ViewModelProvider(this).get(SingleChapterViewModel.class);
 
         final Intent intent = getIntent();
         final int chapterNumber = intent.getIntExtra("chapterNumber", 0);
 
-        if (SharedPreferencesManager.getChapterByNumber(this, chapterNumber) == null) {
+        if (SharedPreferencesManager.getChapterByNumber(this,chapterNumber) != null){
+            singleChapterViewModel.setSingleChapter(SharedPreferencesManager.getChapterByNumber(this,chapterNumber));
+        }
+        if (SharedPreferencesManager.getVerses(SingleChapterActivity.this).size() != 0){
+            singleChapterViewModel.setVersesLiveData(SharedPreferencesManager.getVerses(this));
+        }
+
+        /*if (SharedPreferencesManager.getChapterByNumber(this, chapterNumber) == null) {
             getParticularChapter(chapterNumber);
         } else {
             Chapters chapters = SharedPreferencesManager.getChapterByNumber(this, chapterNumber);
@@ -64,8 +76,19 @@ public class SingleChapterActivity extends AppCompatActivity {
             tvSummaryHindi.setText(chapters.getChapterSummaryHindi());
             tvSummary.setText(chapters.getChapterSummary());
             tvVersesCount.setText(String.valueOf(chapters.getVersesCount()));
+        }*/
+        if (singleChapterViewModel.getChaptersSingleLiveData().getValue() == null) {
+            getParticularChapter(chapterNumber);
+        } else {
+            Chapters chapters = singleChapterViewModel.getChaptersSingleLiveData().getValue();
+            tvNameSingle.setText(chapters.getName());
+            tvNameTranslatedSingle.setText(chapters.getNameTranslated());
+            tvNameMeaning.setText(chapters.getNameMeaning());
+            tvSummaryHindi.setText(chapters.getChapterSummaryHindi());
+            tvSummary.setText(chapters.getChapterSummary());
+            tvVersesCount.setText(String.valueOf(chapters.getVersesCount()));
         }
-        if (SharedPreferencesManager.getVerses(SingleChapterActivity.this).size() == 0) {
+/*        if (SharedPreferencesManager.getVerses(SingleChapterActivity.this).size() == 0) {
             Log.i("SharedPreferences11", "onCreate:getVerses==0: ");
             getAllVersesFromParticularChapter();
         } else {
@@ -74,8 +97,18 @@ public class SingleChapterActivity extends AppCompatActivity {
             final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(SingleChapterActivity.this, RecyclerView.VERTICAL, false);
             rvVerses.setLayoutManager(linearLayoutManager);
             rvVerses.setAdapter(allVersesAdapter);
-        }
+        }*/
 
+        if (singleChapterViewModel.getVersesLiveData().getValue() == null) {
+            Log.i("SharedPreferences11", "onCreate:getVerses==0: ");
+            getAllVersesFromParticularChapter();
+        } else {
+            Log.i("SharedPreferences11", "onCreate:getVerses!=0: ");
+            allVersesAdapter = new AllVersesAdapter(singleChapterViewModel.getVersesLiveData().getValue(), SingleChapterActivity.this);
+            final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(SingleChapterActivity.this, RecyclerView.VERTICAL, false);
+            rvVerses.setLayoutManager(linearLayoutManager);
+            rvVerses.setAdapter(allVersesAdapter);
+        }
     }
 
     private void getParticularChapter(final int chapterNumber) {
@@ -92,12 +125,13 @@ public class SingleChapterActivity extends AppCompatActivity {
                 Log.i("apiCallResponse", "onResponse:particular:isSuccessful: " + response.isSuccessful());
                 Log.i("apiCallResponse", "onResponse:particular:body: " + response.body());
 
-                tvNameSingle.setText(response.body().getName());
-                tvNameTranslatedSingle.setText(response.body().getNameTranslated());
-                tvNameMeaning.setText(response.body().getNameMeaning());
-                tvSummaryHindi.setText(response.body().getChapterSummaryHindi());
-                tvSummary.setText(response.body().getChapterSummary());
-                tvVersesCount.setText(String.valueOf(response.body().getVersesCount()));
+                singleChapterViewModel.setSingleChapter(response.body());
+                tvNameSingle.setText(singleChapterViewModel.getChaptersSingleLiveData().getValue().getName());
+                tvNameTranslatedSingle.setText(singleChapterViewModel.getChaptersSingleLiveData().getValue().getNameTranslated());
+                tvNameMeaning.setText(singleChapterViewModel.getChaptersSingleLiveData().getValue().getNameMeaning());
+                tvSummaryHindi.setText(singleChapterViewModel.getChaptersSingleLiveData().getValue().getChapterSummaryHindi());
+                tvSummary.setText(singleChapterViewModel.getChaptersSingleLiveData().getValue().getChapterSummary());
+                tvVersesCount.setText(String.valueOf(singleChapterViewModel.getChaptersSingleLiveData().getValue().getVersesCount()));
 
 
             }
@@ -125,8 +159,9 @@ public class SingleChapterActivity extends AppCompatActivity {
                 Log.i("apiCallResponse", "onResponse:versesParticularChapter:body: " + new Gson().toJson(response.body()));
 
                 SharedPreferencesManager.saveListVerses(SingleChapterActivity.this, response.body());
+                singleChapterViewModel.setVersesLiveData(response.body());
                 Log.i("SharedPreferences11", "onCreate:getVerses:: " + SharedPreferencesManager.getVerses(SingleChapterActivity.this));
-                allVersesAdapter = new AllVersesAdapter(response.body(), SingleChapterActivity.this);
+                allVersesAdapter = new AllVersesAdapter(singleChapterViewModel.getVersesLiveData().getValue(), SingleChapterActivity.this);
                 final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(SingleChapterActivity.this, RecyclerView.VERTICAL, false);
                 rvVerses.setLayoutManager(linearLayoutManager);
                 rvVerses.setAdapter(allVersesAdapter);

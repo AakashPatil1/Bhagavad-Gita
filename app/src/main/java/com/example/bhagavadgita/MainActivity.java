@@ -53,9 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         rvChapters = findViewById(R.id.rvChapters);
 
-        if(SharedPreferencesManager.getChapters(this).size()==0){
-
-        }else{
+        if(SharedPreferencesManager.getChapters(this).size()!=0){
             mainViewModel.setChapters(SharedPreferencesManager.getChapters(this));
         }
 
@@ -89,7 +87,8 @@ public class MainActivity extends AppCompatActivity {
 
                 if (response.isSuccessful()) {
                     SharedPreferencesManager.saveListChapter(MainActivity.this, response.body());
-                    allChaptersAdapter = new AllChaptersAdapter(response.body(), MainActivity.this);
+                    mainViewModel.setChapters(response.body());
+                    allChaptersAdapter = new AllChaptersAdapter(mainViewModel.getChaptersLiveData().getValue(), MainActivity.this);
                     final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this, RecyclerView.VERTICAL, false);
                     rvChapters.setLayoutManager(linearLayoutManager);
                     rvChapters.setAdapter(allChaptersAdapter);
