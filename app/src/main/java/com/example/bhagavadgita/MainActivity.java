@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
             rvChapters.setAdapter(allChaptersAdapter);
         }*/
 
-// Initialize your ViewModel
+        // Initialize your ViewModel
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class); // Use ViewModelProvider
 
         rvChapters = findViewById(R.id.rvChapters);
