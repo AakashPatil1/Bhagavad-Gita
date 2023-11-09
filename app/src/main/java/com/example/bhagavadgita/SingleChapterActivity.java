@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.bhagavadgita.Adapters.AllVersesAdapter;
@@ -17,6 +18,8 @@ import com.example.bhagavadgita.Models.Verses;
 import com.example.bhagavadgita.Retrofit.ApiClient;
 import com.example.bhagavadgita.Retrofit.ApiService;
 import com.example.bhagavadgita.ViewModel.SingleChapterViewModel;
+import com.example.bhagavadgita.databinding.ActivitySingleChapterBinding;
+import com.example.bhagavadgita.databinding.ActivitySingleVersesBinding;
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -28,86 +31,48 @@ import retrofit2.Response;
 public class SingleChapterActivity extends AppCompatActivity {
 
 
-    TextView tvNameSingle;
-    TextView tvNameTranslatedSingle;
-    TextView tvNameMeaning;
-    TextView tvSummaryHindi;
-    TextView tvSummary;
-    TextView tvVersesCount;
-
-    RecyclerView rvVerses;
-
     AllVersesAdapter allVersesAdapter;
 
     private SingleChapterViewModel singleChapterViewModel;
 
+    private ActivitySingleChapterBinding activitySingleChapterBinding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_single_chapter);
+        activitySingleChapterBinding = ActivitySingleChapterBinding.inflate(getLayoutInflater());
+        View view = activitySingleChapterBinding.getRoot();
+        setContentView(view);
 
-        tvNameSingle = findViewById(R.id.tvNameSingle);
-        tvNameTranslatedSingle = findViewById(R.id.tvNameTranslatedSingle);
-        tvNameMeaning = findViewById(R.id.tvNameMeaning);
-        tvSummary = findViewById(R.id.tvSummary);
-        tvSummaryHindi = findViewById(R.id.tvSummaryHindi);
-        tvVersesCount = findViewById(R.id.tvVersesCount);
-        rvVerses = findViewById(R.id.rvVerses);
 
         singleChapterViewModel = new ViewModelProvider(this).get(SingleChapterViewModel.class);
 
         final Intent intent = getIntent();
         final int chapterNumber = intent.getIntExtra("chapterNumber", 0);
 
-        if (SharedPreferencesManager.getChapterByNumber(this,chapterNumber) != null){
-            singleChapterViewModel.setSingleChapter(SharedPreferencesManager.getChapterByNumber(this,chapterNumber));
+        if (SharedPreferencesManager.getChapterByNumber(this, chapterNumber) != null) {
+            singleChapterViewModel.setSingleChapter(SharedPreferencesManager.getChapterByNumber(this, chapterNumber));
         }
-        if (SharedPreferencesManager.getVerses(SingleChapterActivity.this).size() != 0){
+        if (SharedPreferencesManager.getVerses(SingleChapterActivity.this).size() != 0) {
             singleChapterViewModel.setVersesLiveData(SharedPreferencesManager.getVerses(this));
         }
 
-        /*if (SharedPreferencesManager.getChapterByNumber(this, chapterNumber) == null) {
-            getParticularChapter(chapterNumber);
-        } else {
-            Chapters chapters = SharedPreferencesManager.getChapterByNumber(this, chapterNumber);
-            tvNameSingle.setText(chapters.getName());
-            tvNameTranslatedSingle.setText(chapters.getNameTranslated());
-            tvNameMeaning.setText(chapters.getNameMeaning());
-            tvSummaryHindi.setText(chapters.getChapterSummaryHindi());
-            tvSummary.setText(chapters.getChapterSummary());
-            tvVersesCount.setText(String.valueOf(chapters.getVersesCount()));
-        }*/
+
         if (singleChapterViewModel.getChaptersSingleLiveData().getValue() == null) {
             getParticularChapter(chapterNumber);
         } else {
             Chapters chapters = singleChapterViewModel.getChaptersSingleLiveData().getValue();
-            tvNameSingle.setText(chapters.getName());
-            tvNameTranslatedSingle.setText(chapters.getNameTranslated());
-            tvNameMeaning.setText(chapters.getNameMeaning());
-            tvSummaryHindi.setText(chapters.getChapterSummaryHindi());
-            tvSummary.setText(chapters.getChapterSummary());
-            tvVersesCount.setText(String.valueOf(chapters.getVersesCount()));
+            if (chapters != null) {
+                updateUIFromChapterResponse(singleChapterViewModel.getChaptersSingleLiveData().getValue());
+            }
         }
-/*        if (SharedPreferencesManager.getVerses(SingleChapterActivity.this).size() == 0) {
-            Log.i("SharedPreferences11", "onCreate:getVerses==0: ");
-            getAllVersesFromParticularChapter();
-        } else {
-            Log.i("SharedPreferences11", "onCreate:getVerses!=0: ");
-            allVersesAdapter = new AllVersesAdapter(SharedPreferencesManager.getVerses(SingleChapterActivity.this), SingleChapterActivity.this);
-            final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(SingleChapterActivity.this, RecyclerView.VERTICAL, false);
-            rvVerses.setLayoutManager(linearLayoutManager);
-            rvVerses.setAdapter(allVersesAdapter);
-        }*/
 
         if (singleChapterViewModel.getVersesLiveData().getValue() == null) {
             Log.i("SharedPreferences11", "onCreate:getVerses==0: ");
             getAllVersesFromParticularChapter();
         } else {
             Log.i("SharedPreferences11", "onCreate:getVerses!=0: ");
-            allVersesAdapter = new AllVersesAdapter(singleChapterViewModel.getVersesLiveData().getValue(), SingleChapterActivity.this);
-            final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(SingleChapterActivity.this, RecyclerView.VERTICAL, false);
-            rvVerses.setLayoutManager(linearLayoutManager);
-            rvVerses.setAdapter(allVersesAdapter);
+           setupVersesRecyclerView(singleChapterViewModel.getVersesLiveData().getValue());
         }
     }
 
@@ -125,13 +90,11 @@ public class SingleChapterActivity extends AppCompatActivity {
                 Log.i("apiCallResponse", "onResponse:particular:isSuccessful: " + response.isSuccessful());
                 Log.i("apiCallResponse", "onResponse:particular:body: " + response.body());
 
-                singleChapterViewModel.setSingleChapter(response.body());
-                tvNameSingle.setText(singleChapterViewModel.getChaptersSingleLiveData().getValue().getName());
-                tvNameTranslatedSingle.setText(singleChapterViewModel.getChaptersSingleLiveData().getValue().getNameTranslated());
-                tvNameMeaning.setText(singleChapterViewModel.getChaptersSingleLiveData().getValue().getNameMeaning());
-                tvSummaryHindi.setText(singleChapterViewModel.getChaptersSingleLiveData().getValue().getChapterSummaryHindi());
-                tvSummary.setText(singleChapterViewModel.getChaptersSingleLiveData().getValue().getChapterSummary());
-                tvVersesCount.setText(String.valueOf(singleChapterViewModel.getChaptersSingleLiveData().getValue().getVersesCount()));
+                if (response.body() != null) {
+
+                    singleChapterViewModel.setSingleChapter(response.body());
+                    updateUIFromChapterResponse(singleChapterViewModel.getChaptersSingleLiveData().getValue());
+                }
 
 
             }
@@ -158,13 +121,13 @@ public class SingleChapterActivity extends AppCompatActivity {
                 Log.i("apiCallResponse", "onResponse:versesParticularChapter:isSuccessful: " + response.isSuccessful());
                 Log.i("apiCallResponse", "onResponse:versesParticularChapter:body: " + new Gson().toJson(response.body()));
 
-                SharedPreferencesManager.saveListVerses(SingleChapterActivity.this, response.body());
-                singleChapterViewModel.setVersesLiveData(response.body());
-                Log.i("SharedPreferences11", "onCreate:getVerses:: " + SharedPreferencesManager.getVerses(SingleChapterActivity.this));
-                allVersesAdapter = new AllVersesAdapter(singleChapterViewModel.getVersesLiveData().getValue(), SingleChapterActivity.this);
-                final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(SingleChapterActivity.this, RecyclerView.VERTICAL, false);
-                rvVerses.setLayoutManager(linearLayoutManager);
-                rvVerses.setAdapter(allVersesAdapter);
+                if (response.body() != null) {
+
+                    SharedPreferencesManager.saveListVerses(SingleChapterActivity.this, response.body());
+                    singleChapterViewModel.setVersesLiveData(response.body());
+                    Log.i("SharedPreferences11", "onCreate:getVerses:: " + SharedPreferencesManager.getVerses(SingleChapterActivity.this));
+                    setupVersesRecyclerView(singleChapterViewModel.getVersesLiveData().getValue());
+                }
 
             }
 
@@ -174,5 +137,22 @@ public class SingleChapterActivity extends AppCompatActivity {
                 Log.e("apiCallError", "onFailure:versesParticularChapter: " + t.getLocalizedMessage());
             }
         });
+    }
+
+
+    private void updateUIFromChapterResponse(Chapters chapters) {
+        activitySingleChapterBinding.tvNameSingle.setText(chapters.getName());
+        activitySingleChapterBinding.tvNameTranslatedSingle.setText(chapters.getNameTranslated());
+        activitySingleChapterBinding.tvNameMeaning.setText(chapters.getNameMeaning());
+        activitySingleChapterBinding.tvSummaryHindi.setText(chapters.getChapterSummaryHindi());
+        activitySingleChapterBinding.tvSummary.setText(chapters.getChapterSummary());
+        activitySingleChapterBinding.tvVersesCount.setText(String.valueOf(chapters.getVersesCount()));
+    }
+
+    private void setupVersesRecyclerView(List<Verses> versesList) {
+        allVersesAdapter = new AllVersesAdapter(versesList, SingleChapterActivity.this);
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(SingleChapterActivity.this, RecyclerView.VERTICAL, false);
+        activitySingleChapterBinding.rvVerses.setLayoutManager(linearLayoutManager);
+        activitySingleChapterBinding.rvVerses.setAdapter(allVersesAdapter);
     }
 }

@@ -33,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/_2sdp"
-                android:textColor="@color/main_text1"
+                android:textColor="@color/main_sub"
                 android:textSize="@dimen/_14sdp"
                 tools:text="caskkcs" />
         </LinearLayout>

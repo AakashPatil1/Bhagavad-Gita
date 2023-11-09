@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.example.bhagavadgita.Adapters.AllChaptersAdapter;
 import com.example.bhagavadgita.Local.SharedPreferencesManager;
@@ -14,6 +15,7 @@ import com.example.bhagavadgita.Models.Chapters;
 import com.example.bhagavadgita.Retrofit.ApiClient;
 import com.example.bhagavadgita.Retrofit.ApiService;
 import com.example.bhagavadgita.ViewModel.MainViewModel;
+import com.example.bhagavadgita.databinding.ActivityMainBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,34 +28,23 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
 
-    private RecyclerView rvChapters;
     private AllChaptersAdapter allChaptersAdapter;
     private MainViewModel mainViewModel;
+
+    private ActivityMainBinding activityMainBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
+        View view = activityMainBinding.getRoot();
+        setContentView(view);
 
-        rvChapters = findViewById(R.id.rvChapters);
 
-        /*if (SharedPreferencesManager.getChapters(this).size() == 0) {
-            Log.i("SharedPreferences", "onCreate:getChapters==0: ");
-            getAllChapters();
-        } else {
-            Log.i("SharedPreferences", "onCreate:getChapters!=0: ");
-            allChaptersAdapter = new AllChaptersAdapter(SharedPreferencesManager.getChapters(this), MainActivity.this);
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this, RecyclerView.VERTICAL, false);
-            rvChapters.setLayoutManager(linearLayoutManager);
-            rvChapters.setAdapter(allChaptersAdapter);
-        }*/
+        mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
-        // Initialize your ViewModel
-        mainViewModel = new ViewModelProvider(this).get(MainViewModel.class); // Use ViewModelProvider
 
-        rvChapters = findViewById(R.id.rvChapters);
-
-        if(SharedPreferencesManager.getChapters(this).size()!=0){
+        if (SharedPreferencesManager.getChapters(this).size() != 0) {
             mainViewModel.setChapters(SharedPreferencesManager.getChapters(this));
         }
 
@@ -62,10 +53,7 @@ public class MainActivity extends AppCompatActivity {
             getAllChapters();
         } else {
             Log.i("ViewModel", "onCreate: chaptersLiveData is not empty");
-            allChaptersAdapter = new AllChaptersAdapter(mainViewModel.getChaptersLiveData().getValue(), MainActivity.this);
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this, RecyclerView.VERTICAL, false);
-            rvChapters.setLayoutManager(linearLayoutManager);
-            rvChapters.setAdapter(allChaptersAdapter);
+            setupRecyclerView(mainViewModel.getChaptersLiveData().getValue());
         }
 
 
@@ -88,11 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     SharedPreferencesManager.saveListChapter(MainActivity.this, response.body());
                     mainViewModel.setChapters(response.body());
-                    allChaptersAdapter = new AllChaptersAdapter(mainViewModel.getChaptersLiveData().getValue(), MainActivity.this);
-                    final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this, RecyclerView.VERTICAL, false);
-                    rvChapters.setLayoutManager(linearLayoutManager);
-                    rvChapters.setAdapter(allChaptersAdapter);
-
+                    setupRecyclerView(mainViewModel.getChaptersLiveData().getValue());
                 }
             }
 
@@ -102,6 +86,13 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("apiCallError", "onFailure:getAllChapters: " + t.getLocalizedMessage());
             }
         });
+    }
+
+    private void setupRecyclerView(List<Chapters> chaptersList) {
+        allChaptersAdapter = new AllChaptersAdapter(chaptersList, MainActivity.this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this, RecyclerView.VERTICAL, false);
+        activityMainBinding.rvChapters.setLayoutManager(linearLayoutManager);
+        activityMainBinding.rvChapters.setAdapter(allChaptersAdapter);
     }
 
 
