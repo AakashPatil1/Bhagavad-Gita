@@ -87,7 +87,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvVerses"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_400sdp"
+                android:layout_height="match_parent"
                 android:layout_margin="@dimen/_6sdp"
                 android:padding="@dimen/_10sdp"/>
 
