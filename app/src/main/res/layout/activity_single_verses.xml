@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg"
-    tools:context=".SingleVersesActivity">
+    tools:context=".ui.verses.view.SingleVersesActivity">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
