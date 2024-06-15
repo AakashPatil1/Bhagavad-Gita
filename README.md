@@ -1,6 +1,6 @@
 # Bhagavad-Gita
-Create an app for the Bhagavad Gita by integrating a free API to fetch verses and related content. Utilize SharedPreferences to allow users to personalize their experience by storing preferences like language selection and favorite verses within the app.
 
+Create an app for the Bhagavad Gita by integrating a free API to fetch verses and related content. Utilize Room database to allow users to personalize their experience by storing preferences like language selection, favorite verses, and retrieved data within the app.
 
 ## Overview
 
@@ -8,9 +8,10 @@ The Bhagavad Gita App is a mobile application that provides access to the timele
 
 ## Features
 
-- Retrieve Bhagavad Gita verses and translations using the [Bhagavad Gita API](https://bhagavadgita.io/api) and save the data in SharedPreferences.
-- Display verses and translations from SharedPreferences in a user-friendly format within the app without making redundant API calls.
-
+- Retrieve Bhagavad Gita verses and translations using the [Bhagavad Gita API](https://rapidapi.com/bhagavad-gita-bhagavad-gita-default/api/bhagavad-gita3).
+- Save and manage data using Room database.
+- Display verses and translations from the Room database, minimizing redundant API calls.
+- Dependency injection with Hilt-Dagger for better code organization.
 
 ## Usage
 
@@ -29,8 +30,7 @@ The Bhagavad Gita App is a mobile application that provides access to the timele
 
 3. Run the app on a mobile device or emulator.
 
-4. Explore Bhagavad Gita verses, translations, and customize the app's settings based on your preferences. The app will use the data saved in SharedPreferences, minimizing API calls.
-
+4. Explore Bhagavad Gita verses, translations, and customize the app's settings based on your preferences. The app will use the data saved in the Room database , minimizing API calls.
 
 ## Installation
 
@@ -47,6 +47,21 @@ To run the app locally, follow these steps:
 3. Open the project in Android Studio.
 
 4. Build and run the app on your emulator or device.
+
+## Dependencies
+
+Make sure to add the following dependencies to your `build.gradle` file:
+
+```groovy
+dependencies {
+    implementation "androidx.room:room-runtime:2.4.2"
+    kapt "androidx.room:room-compiler:2.4.2"
+    implementation "com.google.dagger:hilt-android:2.40.5"
+    kapt "com.google.dagger:hilt-compiler:2.40.5"
+    // other dependencies...
+}
+```
+
 
 ## Contributing
 
