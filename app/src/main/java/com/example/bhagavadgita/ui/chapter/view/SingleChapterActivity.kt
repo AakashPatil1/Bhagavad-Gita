@@ -30,7 +30,6 @@ class SingleChapterActivity : AppCompatActivity() {
         val intent = intent
         var chapterNumber = intent.getIntExtra("chapterNumber", 0)
         singleChapterViewModel.fetchData(chapterNumber)
-        singleChapterViewModel.fetchVersesData(chapterNumber)
 
         setupUI()
         setupObserver()

@@ -6,13 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bhagavadgita.data.model.Chapters
 import com.example.bhagavadgita.data.model.Verses
-import com.example.bhagavadgita.data.repository.MainRepository
+import com.example.bhagavadgita.data.repository.ChapterRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SingleChapterViewModel @Inject constructor(private val mainRepository: MainRepository) : ViewModel() {
+class SingleChapterViewModel @Inject constructor(private val chapterRepository: ChapterRepository) :
+    ViewModel() {
     private val _singleChaptersLiveData = MutableLiveData<Chapters>()
     private val _getVersesLiveData = MutableLiveData<List<Verses>>()
     val chaptersSingleLiveData: LiveData<Chapters>
@@ -21,21 +22,16 @@ class SingleChapterViewModel @Inject constructor(private val mainRepository: Mai
     val versesLiveData: LiveData<List<Verses>>
         get() = _getVersesLiveData
 
-    public fun fetchData(chapterNumber: Int) {
+    fun fetchData(chapterNumber: Int) {
         viewModelScope.launch {
-            val res =mainRepository.getParticularChapter(chapterNumber)
-            if (res.isSuccessful && res.body() != null){
-                _singleChaptersLiveData.postValue(res.body())
+            chapterRepository.getParticularChapter(chapterNumber)
+            chapterRepository.chaptersSingleLiveData.observeForever { chapter ->
+                _singleChaptersLiveData.postValue(chapter)
+            }
+            chapterRepository.versesLiveData.observeForever { verses ->
+                _getVersesLiveData.postValue(verses)
             }
         }
     }
 
-    public fun fetchVersesData(chapterNumber: Int){
-        viewModelScope.launch {
-            val res = mainRepository.getAllVersesFromParticularChapter(chapterNumber)
-            if (res.isSuccessful && res.body() != null){
-                _getVersesLiveData.postValue(res.body())
-            }
-        }
-    }
 }

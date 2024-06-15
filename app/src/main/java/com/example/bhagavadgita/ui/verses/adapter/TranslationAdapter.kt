@@ -21,9 +21,9 @@ class TranslationAdapter(var translations: ArrayList<Translation>, var context: 
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.tvDesc.text = translations[position].getDescription()
-        holder.tvLanguage.text = translations[position].getLanguage().uppercase(Locale.getDefault())
-        holder.tvAuthor.text = translations[position].getAuthor_name()
+        holder.tvDesc.text = translations[position].description
+        holder.tvLanguage.text = translations[position].language!!.uppercase(Locale.getDefault())
+        holder.tvAuthor.text = translations[position].author_name
     }
 
     override fun getItemCount(): Int {
@@ -31,8 +31,6 @@ class TranslationAdapter(var translations: ArrayList<Translation>, var context: 
     }
 
     fun addData(translations: ArrayList<Translation>) {
-        Log.d("TAG", "setupObserver: ${Gson().toJson(translations)}")
-
         this.translations.addAll(translations)
     }
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

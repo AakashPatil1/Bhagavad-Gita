@@ -55,7 +55,7 @@ class SingleVersesActivity : AppCompatActivity() {
     }
 
     private fun notifyData(it: Verses) {
-        activitySingleVersesBinding.tvText.text = it.getText()
+        activitySingleVersesBinding.tvText.text = it.text
         translationAdapter.addData(it.translations)
         translationAdapter.notifyDataSetChanged()
         commentaryAdapter.addData(it.commentaries)

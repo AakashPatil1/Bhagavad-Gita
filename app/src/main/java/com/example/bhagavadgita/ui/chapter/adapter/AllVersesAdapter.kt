@@ -19,11 +19,11 @@ class AllVersesAdapter(var list: MutableList<Verses>, var vContext: Context) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.tvText.text = list[position].getText()
+        holder.tvText.text = list[position].text
         holder.itemView.setOnClickListener {
             val intent = Intent(vContext, SingleVersesActivity::class.java)
-            intent.putExtra("chapterNumber", list[position].getChapter_number())
-            intent.putExtra("versesNumber", list[position].getVerse_number())
+            intent.putExtra("chapterNumber", list[position].chapterNumber)
+            intent.putExtra("versesNumber", list[position].verseNumber)
             vContext.startActivity(intent)
         }
     }

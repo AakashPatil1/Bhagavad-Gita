@@ -32,7 +32,6 @@ class AllChaptersAdapter(var list: ArrayList<Chapters>, var cContext: Context) :
     }
 
     override fun getItemCount(): Int {
-        Log.i("SharedPreferences", "getItemCount: " + list.size)
         return list.size
     }
 

@@ -5,13 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bhagavadgita.data.model.Verses
-import com.example.bhagavadgita.data.repository.MainRepository
+import com.example.bhagavadgita.data.repository.VersesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SingleVersesViewModel @Inject constructor(private val mainRepository: MainRepository) :
+class SingleVersesViewModel @Inject constructor(private val versesRepository: VersesRepository) :
     ViewModel() {
     private val _versesLiveData = MutableLiveData<Verses>()
     val verses: LiveData<Verses>
@@ -20,9 +20,9 @@ class SingleVersesViewModel @Inject constructor(private val mainRepository: Main
 
     fun fetchSingleVerses(chapterNumber: Int, versesNumber: Int) {
         viewModelScope.launch {
-            val res = mainRepository.getParticularVerse(chapterNumber, versesNumber)
-            if (res.isSuccessful && res.body() != null){
-                _versesLiveData.postValue(res.body())
+            versesRepository.getParticularVerse(chapterNumber, versesNumber)
+            versesRepository.verses.observeForever {
+                _versesLiveData.postValue(it)
             }
         }
     }

@@ -19,9 +19,9 @@ class CommentaryAdapter(var commentaries: ArrayList<Commentary>, var context: Co
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.tvDesc.text = commentaries[position].getDescription().trim { it <= ' ' }
-        holder.tvLanguage.text = commentaries[position].getLanguage().uppercase(Locale.getDefault())
-        holder.tvAuthor.text = commentaries[position].getAuthor_name()
+        holder.tvDesc.text = commentaries[position].description!!.trim { it <= ' ' }
+        holder.tvLanguage.text = commentaries[position].language!!.uppercase(Locale.getDefault())
+        holder.tvAuthor.text = commentaries[position].authorName
     }
 
     override fun getItemCount(): Int {
