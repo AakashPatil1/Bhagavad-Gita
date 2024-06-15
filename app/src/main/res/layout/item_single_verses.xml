@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/_4sdp">
+    android:layout_margin="@dimen/_6sdp">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/_4sdp"
-        app:cardBackgroundColor="@color/other_bg">
+        app:cardBackgroundColor="@color/other_bg"
+        app:cardCornerRadius="@dimen/_10sdp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,7 +30,7 @@
                 android:id="@+id/tvAuthor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/_2sdp"
+                android:padding="@dimen/_4sdp"
                 android:textColor="@color/main_sub"
                 android:textSize="@dimen/_10sdp" />
 
@@ -37,7 +38,7 @@
                 android:id="@+id/tvLanguage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/_2sdp"
+                android:padding="@dimen/_4sdp"
                 android:textColor="@color/main_sub"
                 android:textSize="@dimen/_10sdp" />
 
