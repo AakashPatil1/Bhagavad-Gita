@@ -12,10 +12,10 @@ import com.example.bhagavadgita.data.model.Verses
 interface BhagavadGitaDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertChapters(listChapters: List<Chapters>)
+    fun insertChapters(listChapters: List<Chapters>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertVerses(listVerses: List<Verses>)
+    fun insertVerses(listVerses: List<Verses>)
 
     @Query("SELECT * FROM chapters WHERE chapter_number = :chapter")
     fun getParticularChapter(chapter: Int): Chapters

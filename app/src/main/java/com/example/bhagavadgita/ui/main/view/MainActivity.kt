@@ -39,11 +39,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupObserver() {
-        mainViewModel.chapters.observe(this, Observer {
+        mainViewModel.chapters.observe(this) {
             it.let {
                 notifiyList(it)
             }
-        })
+        }
     }
 
 

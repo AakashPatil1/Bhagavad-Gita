@@ -16,49 +16,49 @@ data class Verses(
     @ColumnInfo(name = "id")
     @SerializedName("id")
     @Expose
-    val id: Int,
+    var id: Int,
 
     @ColumnInfo(name = "verse_number")
     @SerializedName("verse_number")
     @Expose
-    val verseNumber: Int,
+    var verseNumber: Int,
 
     @ColumnInfo(name = "chapter_number")
     @SerializedName("chapter_number")
     @Expose
-    val chapterNumber: Int,
+    var chapterNumber: Int,
 
     @ColumnInfo(name = "slug")
     @SerializedName("slug")
     @Expose
-    val slug: String,
+    var slug: String,
 
     @ColumnInfo(name = "text")
     @SerializedName("text")
     @Expose
-    val text: String,
+    var text: String,
 
     @ColumnInfo(name = "transliteration")
     @SerializedName("transliteration")
     @Expose
-    val transliteration: String,
+    var transliteration: String,
 
     @ColumnInfo(name = "word_meanings")
     @SerializedName("word_meanings")
     @Expose
-    val wordMeanings: String,
+    var wordMeanings: String,
 
     @ColumnInfo(name = "translations")
     @SerializedName("translations")
     @Expose
     @TypeConverters(TranslationListConverter::class)
-    val translations: ArrayList<Translation>,
+    var translations: ArrayList<Translation>,
 
     @ColumnInfo(name = "commentaries")
     @SerializedName("commentaries")
     @Expose
     @TypeConverters(CommentaryListConverter::class)
-    val commentaries: ArrayList<Commentary>
+    var commentaries: ArrayList<Commentary>
 ){
     constructor() : this(
         id = 0,

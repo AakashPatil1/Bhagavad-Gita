@@ -27,7 +27,7 @@ class ApplicationModule {
             appContext,
             MyDatabase::class.java,
             "bhagavad_gita"
-        ).build()
+        ).allowMainThreadQueries().build()
 
     }
 }
