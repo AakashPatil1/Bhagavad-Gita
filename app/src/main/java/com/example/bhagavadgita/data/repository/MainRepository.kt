@@ -36,7 +36,6 @@ class MainRepository @Inject constructor(
             val data: LiveData<List<Chapters>> = bhagavadGitaDao.getChapters()
             data.observeForever { chapters ->
                 if (chapters != null && chapters.isNotEmpty()) {
-
                     _chapters.postValue(chapters)
                 }
             }

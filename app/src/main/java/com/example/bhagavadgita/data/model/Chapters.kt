@@ -12,52 +12,52 @@ data class Chapters(
     @ColumnInfo(name = "id")
     @SerializedName("id")
     @Expose
-    val id: Int? = null,
+    var id: Int? = 0,
 
     @ColumnInfo(name = "name")
     @SerializedName("name")
     @Expose
-    val name: String? = null,
+    var name: String? = "",
 
     @ColumnInfo(name = "slug")
     @SerializedName("slug")
     @Expose
-    val slug: String? = null,
+    var slug: String? = "",
 
     @ColumnInfo(name = "name_transliterated")
     @SerializedName("name_transliterated")
     @Expose
-    val nameTransliterated: String? = null,
+    var nameTransliterated: String? = "",
 
     @ColumnInfo(name = "name_translated")
     @SerializedName("name_translated")
     @Expose
-    val nameTranslated: String? = null,
+    var nameTranslated: String? = "",
 
     @ColumnInfo(name = "verses_count")
     @SerializedName("verses_count")
     @Expose
-    val versesCount: Int? = null,
+    var versesCount: Int? = -1,
 
     @ColumnInfo(name = "chapter_number")
     @SerializedName("chapter_number")
     @Expose
-    val chapterNumber: Int? = null,
+    var chapterNumber: Int? = -1,
 
     @ColumnInfo(name = "name_meaning")
     @SerializedName("name_meaning")
     @Expose
-    val nameMeaning: String? = null,
+    var nameMeaning: String? = "null",
 
     @ColumnInfo(name = "chapter_summary")
     @SerializedName("chapter_summary")
     @Expose
-    val chapterSummary: String? = null,
+    var chapterSummary: String? = null,
 
     @ColumnInfo(name = "chapter_summary_hindi")
     @SerializedName("chapter_summary_hindi")
     @Expose
-    val chapterSummaryHindi: String? = null
+    var chapterSummaryHindi: String? = ""
 ) {
     constructor() : this(
         id = 0,
@@ -65,8 +65,8 @@ data class Chapters(
         slug = null,
         nameTransliterated = null,
         nameTranslated = null,
-        versesCount = null,
-        chapterNumber = null,
+        versesCount =null,
+        chapterNumber =null,
         nameMeaning = null,
         chapterSummary = null,
         chapterSummaryHindi = null
