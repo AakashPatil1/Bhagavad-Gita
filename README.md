@@ -54,10 +54,10 @@ Make sure to add the following dependencies to your `build.gradle` file:
 
 ```groovy
 dependencies {
-    implementation "androidx.room:room-runtime:2.4.2"
-    kapt "androidx.room:room-compiler:2.4.2"
-    implementation "com.google.dagger:hilt-android:2.40.5"
-    kapt "com.google.dagger:hilt-compiler:2.40.5"
+    implementation "androidx.room:room-runtime:{latest version}"
+    kapt "androidx.room:room-compiler:{latest version}"
+    implementation "com.google.dagger:hilt-android:{latest version}"
+    kapt "com.google.dagger:hilt-compiler:{latest version}"
     // other dependencies...
 }
 ```
